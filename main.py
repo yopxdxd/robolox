@@ -13,9 +13,9 @@ from TwitchChannelPointsMiner.classes.entities.Streamer import Streamer, Streame
 import os
 
 from keep_alive import keep_alive
+import os
 
 keep_alive()
-
 twitch_miner = TwitchChannelPointsMiner(
     username=os.getenv("user"),
     password=os.getenv("passw"),           # If no password will be provided, the script will ask interactively
