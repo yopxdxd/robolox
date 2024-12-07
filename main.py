@@ -95,6 +95,7 @@ twitch_miner.mine(
       Streamer("speciialera", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("LilaFrost21", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("youyou_39_", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("RebootDemi", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("forumjj", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("minilegendyt", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
