@@ -103,7 +103,6 @@ twitch_miner.mine(
       Streamer("hamingxd", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("xlangelz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("sirdandeman", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("tankandbones", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
         
     ],                                  # Array of streamers (order = priority)
     followers=False,                    # Automatic download the list of your followers
