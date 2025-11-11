@@ -87,6 +87,7 @@ twitch_miner = TwitchChannelPointsMiner(
 
 twitch_miner.mine(
 <<<<<<< HEAD
+<<<<<<< HEAD
 [
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("calciumcrit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
@@ -102,6 +103,8 @@ twitch_miner.mine(
 #      Streamer("sirdandeman", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 =======
+=======
+>>>>>>> parent of b4ecd56 (main)
     [
       Streamer("teamliquid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("mendo", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
@@ -122,6 +125,9 @@ twitch_miner.mine(
       Streamer("dabuz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eiya", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("rakin", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+<<<<<<< HEAD
+>>>>>>> parent of b4ecd56 (main)
+=======
 >>>>>>> parent of b4ecd56 (main)
     ],                                  # Array of streamers (order = priority)
     followers=False,                    # Automatic download the list of your followers
