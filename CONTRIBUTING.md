@@ -5,7 +5,7 @@
 Before you begin:
 - Have you read the [code of conduct](CODE_OF_CONDUCT.md)?
 - Check out the [existing issues](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues) & see if there is already an opened issue.
-a
+
 ### Ready to make a change? Fork the repo
 
 Fork using GitHub Desktop:
