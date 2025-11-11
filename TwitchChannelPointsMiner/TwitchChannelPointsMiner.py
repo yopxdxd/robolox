@@ -88,7 +88,7 @@ class TwitchChannelPointsMiner:
     ):
         # Fixes TypeError: 'NoneType' object is not subscriptable
         if not username or username == "your-twitch-username":
-            logger.error("Please edit your runner file (main.py) and try again.")
+            logger.error("Please edit main.py and try again.")
             logger.error("No username, exiting...")
             sys.exit(0)
 
@@ -163,7 +163,7 @@ class TwitchChannelPointsMiner:
         logger.info(
             f"Twitch Channel Points Miner v2 | v{current_version} (fork by yopxdxd)"
         )
-        logger.info("https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2")
+        logger.info("https://github.com/yopxdxd/Twitch-Channel-Points-Miner-v2")
 
         if github_version == "0.0.0":
             logger.error(
@@ -172,6 +172,8 @@ class TwitchChannelPointsMiner:
         elif current_version != github_version:
             logger.info(f"You are running version {current_version} of this script")
             logger.info(f"The latest version on GitHub is {github_version}")
+            time.sleep(5)
+            sys.exit(1)
 
         for sign in [signal.SIGINT, signal.SIGSEGV, signal.SIGTERM]:
             signal.signal(sign, self.end)
@@ -221,7 +223,7 @@ class TwitchChannelPointsMiner:
             logger.error("You can't start multiple sessions of this instance!")
         else:
             logger.info(
-                f"Start session: '{self.session_id}'", extra={"emoji": ":bomb:"}
+                f"Start session: '{self.session_id}'", extra={"emoji": ":green_circle:"}
             )
             self.running = True
             self.start_datetime = datetime.now()
@@ -257,7 +259,7 @@ class TwitchChannelPointsMiner:
 
             logger.info(
                 f"Loading data for {len(streamers_name)} streamers. Please wait...",
-                extra={"emoji": ":nerd_face:"},
+                extra={"emoji": ":hourglass_flowing_sand:"},
             )
             for username in streamers_name:
                 if username in streamers_name:

@@ -62,6 +62,14 @@ class ColorPalette(object):
         color = getattr(self, str(key)) if str(key) in dir(self) else None
         return Fore.RESET if color is None else color
 
+class Color256Palette:
+    red = "\033[38;5;196m"
+    gray = "\033[38;5;8m"
+    cyan = "\033[38;5;14m"
+    reset = "\033[38;5;254m"
+    purple = "\033[38;5;91m"
+    yellow = "\033[38;5;226m"
+    green = "\033[38;5;46m"
 
 class LoggerSettings:
     __slots__ = [
@@ -70,6 +78,7 @@ class LoggerSettings:
         "console_level",
         "console_username",
         "time_zone",
+        "show_seconds",
         "file_level",
         "emoji",
         "colored",
@@ -81,7 +90,9 @@ class LoggerSettings:
         "matrix",
         "pushover",
         "gotify",
-        "username"
+        "username",
+        "smart",
+        "show_claimed_bonus_msg"
     ]
 
     def __init__(
@@ -91,6 +102,7 @@ class LoggerSettings:
         console_level: int = logging.INFO,
         console_username: bool = False,
         time_zone: str or None = None,
+        show_seconds: bool = False,
         file_level: int = logging.DEBUG,
         emoji: bool = platform.system() != "Windows",
         colored: bool = False,
@@ -102,13 +114,16 @@ class LoggerSettings:
         matrix: Matrix or None = None,
         pushover: Pushover or None = None,
         gotify: Gotify or None = None,
-        username: str or None = None
+        username: str or None = None,
+        smart: bool = False,
+        show_claimed_bonus_msg: bool = True
     ):
         self.save = save
         self.less = less
         self.console_level = console_level
         self.console_username = console_username
         self.time_zone = time_zone
+        self.show_seconds = show_seconds
         self.file_level = file_level
         self.emoji = emoji
         self.colored = colored
@@ -121,6 +136,7 @@ class LoggerSettings:
         self.pushover = pushover
         self.gotify = gotify
         self.username = username
+        self.smart = smart
 
 
 class FileFormatter(logging.Formatter):
@@ -176,7 +192,7 @@ class GlobalFormatter(logging.Formatter):
             and record.emoji_is_present is False
         ):
             record.msg = emoji.emojize(
-                f"{record.emoji}  {record.msg.strip()}", language="alias"
+                f"{record.emoji} {record.msg.strip()}", language="alias"
             )
             record.emoji_is_present = True
 
@@ -300,13 +316,16 @@ def configure_loggers(username, settings):
     console_handler.setFormatter(
         GlobalFormatter(
             fmt=(
-                "%(asctime)s - %(levelname)s - [%(funcName)s]: %(message)s"
+                f"[%(levelname)s] %(asctime)s: {'[%(funcName)s]: ' if not settings.smart else ''}%(message)s"
                 if settings.less is False
                 else "%(asctime)s - %(message)s"
             ),
-            datefmt=(
-                "%d/%m/%y %H:%M:%S" if settings.less is False else "%d/%m %H:%M:%S"
-            ),
+            datefmt=((
+                f"{Fore.LIGHTBLACK_EX if settings.smart else ''}"
+                f"%H:%M{':%S' if settings.show_seconds else ''} %d/%m/%y"
+                f"{Fore.RESET if settings.smart else ''}"
+                if settings.less is False else f"%H:%M{':%S' if settings.show_seconds else ''} %d/%m"
+            )),
             settings=settings,
         )
     )
