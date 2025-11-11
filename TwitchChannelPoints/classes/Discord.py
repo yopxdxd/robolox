@@ -18,7 +18,7 @@ class Discord(object):
                 url=self.webhook_api,
                 data={
                     "content": dedent(message),
-                    "username": "TL",
-                    "avatar_url": "https://www.sponsoo.com/uploads/profile-images/logo/team-liquid-766a5958482d81bac6385ec44f745e8c.png",
+                    "username": "miau",
+                    "avatar_url": "https://cdn.discordapp.com/attachments/1011810855895179354/1317598510534754465/IMG_3753.jpg?ex=675f44bc&is=675df33c&hm=c5b85b4773614e3ac51b4ed284b811fe637556655e30c36843a2bfaab63c883e&",
                 },
             )
