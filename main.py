@@ -88,6 +88,7 @@ twitch_miner = TwitchChannelPointsMiner(
 twitch_miner.mine(
 [
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("calciumcrit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("LilaFrost21", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
