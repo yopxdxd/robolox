@@ -1,360 +1,233 @@
-# Based on https://github.com/derrod/twl.py
-# Original Copyright (c) 2020 Rodney
-# The MIT License (MIT)
+# Twitch endpoints
+URL = "https://www.twitch.tv"               # Browser, Apps
+# URL = "https://m.twitch.tv"               # Mobile Browser
+# URL = "https://android.tv.twitch.tv"      # TV
+IRC = "irc.chat.twitch.tv"
+IRC_PORT = 6667
+WEBSOCKET = "wss://pubsub-edge.twitch.tv/v1"
+CLIENT_ID = "ue6666qo983tsx6so1t0vnawi233wa"        # TV
+# CLIENT_ID = "kimne78kx3ncx6brgo4mv6wki5h1ko"      # Browser
+# CLIENT_ID = "r8s4dac0uhzifbpu9sjdiwzctle17ff"     # Mobile Browser
+# CLIENT_ID = "kd1unb4b3q4t58fwlpcbzcbnm76a8fp"     # Android App
+# CLIENT_ID = "851cqzxpb9bqu9z6galo155du"           # iOS App
+DROP_ID = "c2542d6d-cd10-4532-919b-3d19f30a768b"
+# CLIENT_VERSION = "32d439b2-bd5b-4e35-b82a-fae10b04da70"  # Android App
+CLIENT_VERSION = "ef928475-9403-42f2-8a34-55784bd08e16"  # Browser
 
-import copy
-# import getpass
-import logging
-import os
-import pickle
+USER_AGENTS = {
+    "Windows": {
+        'CHROME': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+        "FIREFOX": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0",
+    },
+    "Linux": {
+        "CHROME": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+        "FIREFOX": "Mozilla/5.0 (X11; Linux x86_64; rv:85.0) Gecko/20100101 Firefox/85.0",
+    },
+    "Android": {
+        # "App": "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G975N Build/N2G48C) tv.twitch.android.app/13.4.1/1304010"
+        "App": "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G977N Build/LMY48Z) tv.twitch.android.app/14.3.2/1403020",
+        "TV": "Mozilla/5.0 (Linux; Android 7.1; Smart Box C1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    }
+}
 
-# import webbrowser
-# import browser_cookie3
-
-import requests
-
-from TwitchChannelPointsMiner.classes.Exceptions import (
-    BadCredentialsException,
-    WrongCookiesException,
+BRANCH = "master"
+GITHUB_url = (
+    "https://raw.githubusercontent.com/0x8fv/Twitch-Channel-Points-Miner-v2/"
+    + BRANCH
 )
-from TwitchChannelPointsMiner.constants import CLIENT_ID, GQLOperations, USER_AGENTS
-
-from datetime import datetime, timedelta, timezone
-from time import sleep
-
-logger = logging.getLogger(__name__)
-
-"""def interceptor(request) -> str:
-    if (
-        request.method == 'POST'
-        and request.url == 'https://passport.twitch.tv/protected_login'
-    ):
-        import json
-        body = request.body.decode('utf-8')
-        data = json.loads(body)
-        data['client_id'] = CLIENT_ID
-        request.body = json.dumps(data).encode('utf-8')
-        del request.headers['Content-Length']
-        request.headers['Content-Length'] = str(len(request.body))"""
 
 
-class TwitchLogin(object):
-    __slots__ = [
-        "client_id",
-        "device_id",
-        "token",
-        "login_check_result",
-        "session",
-        "session",
-        "username",
-        "password",
-        "user_id",
-        "email",
-        "cookies",
-        "shared_cookies"
-    ]
-
-    def __init__(self, client_id, device_id, username, user_agent, password=None):
-        self.client_id = client_id
-        self.device_id = device_id
-        self.token = None
-        self.login_check_result = False
-        self.session = requests.session()
-        self.session.headers.update(
-            {"Client-ID": self.client_id,
-                "X-Device-Id": self.device_id, "User-Agent": user_agent}
-        )
-        self.username = username
-        self.password = password
-        self.user_id = None
-        self.email = None
-
-        self.cookies = []
-        self.shared_cookies = []
-
-    def login_flow(self):
-        logger.info("You'll have to login to Twitch!")
-
-        post_data = {
-            "client_id": self.client_id,
-            "scopes": (
-                "channel_read chat:read user_blocks_edit "
-                "user_blocks_read user_follows_edit user_read"
-            )
-        }
-        # login-fix
-        use_backup_flow = False
-        # use_backup_flow = True
-        while True:
-            logger.info("Trying the TV login method..")
-
-            login_response = self.send_oauth_request(
-                "https://id.twitch.tv/oauth2/device", post_data)
-
-            # {
-            #     "device_code": "40 chars [A-Za-z0-9]",
-            #     "expires_in": 1800,
-            #     "interval": 5,
-            #     "user_code": "8 chars [A-Z]",
-            #     "verification_uri": "https://www.twitch.tv/activate"
-            # }
-
-            if login_response.status_code != 200:
-                logger.error("TV login response is not 200. Try again")
-                break
-
-            login_response_json = login_response.json()
-
-            if "user_code" in login_response_json:
-                user_code: str = login_response_json["user_code"]
-                now = datetime.now(timezone.utc)
-                device_code: str = login_response_json["device_code"]
-                interval: int = login_response_json["interval"]
-                expires_at = now + \
-                    timedelta(seconds=login_response_json["expires_in"])
-                logger.info(
-                    "Open https://www.twitch.tv/activate"
-                )
-                logger.info(
-                    f"and enter this code: {user_code}"
-                )
-                logger.info(
-                    f"Hurry up! It will expire in {int(login_response_json['expires_in'] / 60)} minutes!"
-                )
-                # twofa = input("2FA token: ")
-                # webbrowser.open_new_tab("https://www.twitch.tv/activate")
-
-                post_data = {
-                    "client_id": CLIENT_ID,
-                    "device_code": device_code,
-                    "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
+class GQLOperations:
+    url = "https://gql.twitch.tv/gql"
+    integrity_url = "https://gql.twitch.tv/integrity"
+    WithIsStreamLiveQuery = {
+        "operationName": "WithIsStreamLiveQuery",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea",
+            }
+        },
+    }
+    PlaybackAccessToken = {
+        "operationName": "PlaybackAccessToken",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "3093517e37e4f4cb48906155bcd894150aef92617939236d2508f3375ab732ce",
+            }
+        },
+    }
+    VideoPlayerStreamInfoOverlayChannel = {
+        "operationName": "VideoPlayerStreamInfoOverlayChannel",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "a5f2e34d626a9f4f5c0204f910bab2194948a9502089be558bb6e779a9e1b3d2",
+            }
+        },
+    }
+    ClaimCommunityPoints = {
+        "operationName": "ClaimCommunityPoints",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "46aaeebe02c99afdf4fc97c7c0cba964124bf6b0af229395f1f6d1feed05b3d0",
+            }
+        },
+    }
+    CommunityMomentCallout_Claim = {
+        "operationName": "CommunityMomentCallout_Claim",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "e2d67415aead910f7f9ceb45a77b750a1e1d9622c936d832328a0689e054db62",
+            }
+        },
+    }
+    DropsPage_ClaimDropRewards = {
+        "operationName": "DropsPage_ClaimDropRewards",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "a455deea71bdc9015b78eb49f4acfbce8baa7ccbedd28e549bb025bd0f751930",
+            }
+        },
+    }
+    ChannelPointsContext = {
+        "operationName": "ChannelPointsContext",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "1530a003a7d374b0380b79db0be0534f30ff46e61cffa2bc0e2468a909fbc024",
+            }
+        },
+    }
+    JoinRaid = {
+        "operationName": "JoinRaid",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "c6a332a86d1087fbbb1a8623aa01bd1313d2386e7c63be60fdb2d1901f01a4ae",
+            }
+        },
+    }
+    ModViewChannelQuery = {
+        "operationName": "ModViewChannelQuery",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "df5d55b6401389afb12d3017c9b2cf1237164220c8ef4ed754eae8188068a807",
+            }
+        },
+    }
+    Inventory = {
+        "operationName": "Inventory",
+        "variables": {"fetchRewardCampaigns": True},
+        # "variables": {},
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "37fea486d6179047c41d0f549088a4c3a7dd60c05c70956a1490262f532dccd9",
+            }
+        },
+    }
+    MakePrediction = {
+        "operationName": "MakePrediction",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "b44682ecc88358817009f20e69d75081b1e58825bb40aa53d5dbadcc17c881d8",
+            }
+        },
+    }
+    ViewerDropsDashboard = {
+        "operationName": "ViewerDropsDashboard",
+        # "variables": {},
+        "variables": {"fetchRewardCampaigns": True},
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "8d5d9b5e3f088f9d1ff39eb2caab11f7a4cf7a3353da9ce82b5778226ff37268",
+            }
+        },
+    }
+    DropCampaignDetails = {
+        "operationName": "DropCampaignDetails",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "f6396f5ffdde867a8f6f6da18286e4baf02e5b98d14689a69b5af320a4c7b7b8",
+            }
+        },
+    }
+    DropsHighlightService_AvailableDrops = {
+        "operationName": "DropsHighlightService_AvailableDrops",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "9a62a09bce5b53e26e64a671e530bc599cb6aab1e5ba3cbd5d85966d3940716f",
+            }
+        },
+    }
+    UserByLogin = {
+        "operationName": "UserByLogin",
+        "variables": {"login": None},
+        "query": """
+            query UserByLogin($login: String!) {
+                user(login: $login) {
+                    id
+                    login
+                    displayName
                 }
-
-                while True:
-                    # sleep first, not like the user is gonna enter the code *that* fast
-                    sleep(interval)
-                    login_response = self.send_oauth_request(
-                        "https://id.twitch.tv/oauth2/token", post_data)
-                    if now == expires_at:
-                        logger.error("Code expired. Try again")
-                        break
-                    # 200 means success, 400 means the user haven't entered the code yet
-                    if login_response.status_code != 200:
-                        continue
-                    # {
-                    #     "access_token": "40 chars [A-Za-z0-9]",
-                    #     "refresh_token": "40 chars [A-Za-z0-9]",
-                    #     "scope": [...],
-                    #     "token_type": "bearer"
-                    # }
-                    login_response_json = login_response.json()
-                    if "access_token" in login_response_json:
-                        self.set_token(login_response_json["access_token"])
-                        return self.check_login()
-            # except RequestInvalid:
-                # the device_code has expired, request a new code
-                # continue
-                # invalidate_after is not None
-                # account for the expiration landing during the request
-                # and datetime.now(timezone.utc) >= (invalidate_after - session_timeout)
-            # ):
-                # raise RequestInvalid()
-                    else:
-                        if "error_code" in login_response:
-                            err_code = login_response["error_code"]
-
-                        logger.error(f"Unknown error: {login_response}")
-                        raise NotImplementedError(
-                            f"Unknown TwitchAPI error code: {err_code}"
-                        )
-
-            if use_backup_flow:
-                break
-
-        if use_backup_flow:
-            # self.set_token(self.login_flow_backup(password))
-            self.set_token(self.login_flow_backup())
-            return self.check_login()
-
-        return False
-
-    def set_token(self, new_token):
-        self.token = new_token
-        self.session.headers.update({"Authorization": f"Bearer {self.token}"})
-
-    # def send_login_request(self, json_data):
-    def send_oauth_request(self, url, json_data):
-        # response = self.session.post("https://passport.twitch.tv/protected_login", json=json_data)
-        """response = self.session.post("https://passport.twitch.tv/login", json=json_data, headers={
-            'Accept': 'application/vnd.twitchtv.v3+json',
-            'Accept-Encoding': 'gzip',
-            'Accept-Language': 'en-US',
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Host': 'passport.twitch.tv'
-        },)"""
-        response = self.session.post(url, data=json_data, headers={
-            'Accept': 'application/json',
-            'Accept-Encoding': 'gzip',
-            'Accept-Language': 'en-US',
-            "Cache-Control": "no-cache",
-            "Client-Id": CLIENT_ID,
-            "Host": "id.twitch.tv",
-            "Origin": "https://android.tv.twitch.tv",
-            "Pragma": "no-cache",
-            "Referer": "https://android.tv.twitch.tv/",
-            "User-Agent": USER_AGENTS["Android"]["TV"],
-            "X-Device-Id": self.device_id
-        },)
-        return response
-
-    def login_flow_backup(self, password=None):
-        """Backup OAuth Selenium login
-        from undetected_chromedriver import ChromeOptions
-        import seleniumwire.undetected_chromedriver.v2 as uc
-        from selenium.webdriver.common.by import By
-        from time import sleep
-
-        HEADLESS = False
-
-        options = uc.ChromeOptions()
-        if HEADLESS is True:
-            options.add_argument('--headless')
-        options.add_argument('--log-level=3')
-        options.add_argument('--disable-web-security')
-        options.add_argument('--allow-running-insecure-content')
-        options.add_argument('--lang=en')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-gpu')
-        # options.add_argument("--user-agent=\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\"")
-        # options.add_argument("--window-size=1920,1080")
-        # options.set_capability("detach", True)
-
-        logger.info(
-            'Now a browser window will open, it will login with your data.')
-        driver = uc.Chrome(
-            options=options, use_subprocess=True  # , executable_path=EXECUTABLE_PATH
-        )
-        driver.request_interceptor = interceptor
-        driver.get('https://www.twitch.tv/login')
-
-        driver.find_element(By.ID, 'login-username').send_keys(self.username)
-        driver.find_element(By.ID, 'password-input').send_keys(password)
-        sleep(0.3)
-        driver.execute_script(
-            'document.querySelector("#root > div > div.scrollable-area > div.simplebar-scroll-content > div > div > div > div.Layout-sc-nxg1ff-0.gZaqky > form > div > div:nth-child(3) > button > div > div").click()'
-        )
-
-        logger.info(
-            'Enter your verification code in the browser and wait for the Twitch website to load, then press Enter here.'
-        )
-        input()
-
-        logger.info("Extracting cookies...")
-        self.cookies = driver.get_cookies()
-        # print(self.cookies)
-        # driver.close()
-        driver.quit()
-        self.username = self.get_cookie_value("login")
-        # print(f"self.username: {self.username}")
-
-        if not self.username:
-            logger.error("Couldn't extract login, probably bad cookies.")
-            return False
-
-        return self.get_cookie_value("auth-token")"""
-
-        # logger.error("Backup login flow is not available. Use a VPN or wait a while to avoid the CAPTCHA.")
-        # return False
-
-        """Backup OAuth login flow in case manual captcha solving is required"""
-        browser = input(
-            "What browser do you use? Chrome (1), Firefox (2), Other (3): "
-        ).strip()
-        if browser not in ("1", "2"):
-            logger.info("Your browser is unsupported, sorry.")
-            return None
-
-        input(
-            "Please login inside your browser of choice (NOT incognito mode) and press Enter..."
-        )
-        logger.info("Loading cookies saved on your computer...")
-        twitch_domain = ".twitch.tv"
-        if browser == "1":  # chrome
-            cookie_jar = browser_cookie3.chrome(domain_name=twitch_domain)
-        else:
-            cookie_jar = browser_cookie3.firefox(domain_name=twitch_domain)
-        # logger.info(f"cookie_jar: {cookie_jar}")
-        cookies_dict = requests.utils.dict_from_cookiejar(cookie_jar)
-        # logger.info(f"cookies_dict: {cookies_dict}")
-        self.username = cookies_dict.get("login")
-        self.shared_cookies = cookies_dict
-        return cookies_dict.get("auth-token")
-
-    def check_login(self):
-        if self.login_check_result:
-            return self.login_check_result
-        if self.token is None:
-            return False
-
-        self.login_check_result = self.__set_user_id()
-        return self.login_check_result
-
-    def save_cookies(self, cookies_file):
-        logger.info("Saving cookies to your computer..")
-        cookies_dict = self.session.cookies.get_dict()
-        # print(f"cookies_dict2pickle: {cookies_dict}")
-        cookies_dict["auth-token"] = self.token
-        if "persistent" not in cookies_dict:  # saving user id cookies
-            cookies_dict["persistent"] = self.user_id
-
-        # old way saves only 'auth-token' and 'persistent'
-        self.cookies = []
-        # cookies_dict = self.shared_cookies
-        # print(f"cookies_dict2pickle: {cookies_dict}")
-        for cookie_name, value in cookies_dict.items():
-            self.cookies.append({"name": cookie_name, "value": value})
-        # print(f"cookies2pickle: {self.cookies}")
-        pickle.dump(self.cookies, open(cookies_file, "wb"))
-
-    def get_cookie_value(self, key):
-        for cookie in self.cookies:
-            if cookie["name"] == key:
-                if cookie["value"] is not None:
-                    return cookie["value"]
-        return None
-
-    def load_cookies(self, cookies_file):
-        if os.path.isfile(cookies_file):
-            self.cookies = pickle.load(open(cookies_file, "rb"))
-        else:
-            raise WrongCookiesException("There must be a cookies file!")
-
-    def get_user_id(self):
-        persistent = self.get_cookie_value("persistent")
-        user_id = (
-            int(persistent.split("%")[
-                0]) if persistent is not None else self.user_id
-        )
-        if user_id is None:
-            if self.__set_user_id() is True:
-                return self.user_id
-        return user_id
-
-    def __set_user_id(self):
-        json_data = copy.deepcopy(GQLOperations.UserByLogin)
-        json_data["variables"]["login"] = self.username
-        response = self.session.post(GQLOperations.url, json=json_data)
-
-        if response.status_code == 200:
-            json_response = response.json()
-            if (
-                "data" in json_response
-                and "user" in json_response["data"]
-                and json_response["data"]["user"]["id"] is not None
-            ):
-                self.user_id = json_response["data"]["user"]["id"]
-                return True
-        return False
-
-    def get_auth_token(self):
-        return self.get_cookie_value("auth-token")
+            }
+        """,
+    }
+    PersonalSections = (
+        {
+            "operationName": "PersonalSections",
+            "variables": {
+                "input": {
+                    "sectionInputs": ["FOLLOWED_SECTION"],
+                    "recommendationContext": {"platform": "web"},
+                },
+                "channelLogin": None,
+                "withChannelUser": False,
+                "creatorAnniversariesExperimentEnabled": False,
+            },
+            "extensions": {
+                "persistedQuery": {
+                    "version": 1,
+                    "sha256Hash": "9fbdfb00156f754c26bde81eb47436dee146655c92682328457037da1a48ed39",
+                }
+            },
+        },
+    )
+    ChannelFollows = {
+        "operationName": "ChannelFollows",
+        "variables": {"limit": 100, "order": "ASC"},
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "eecf815273d3d949e5cf0085cc5084cd8a1b5b7b6f7990cf43cb0beadf546907",
+            }
+        },
+    }
+    UserPointsContribution = {
+        "operationName": "UserPointsContribution",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "23ff2c2d60708379131178742327ead913b93b1bd6f665517a6d9085b73f661f"
+            }
+        }
+    }
+    ContributeCommunityPointsCommunityGoal = {
+        "operationName": "ContributeCommunityPointsCommunityGoal",
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "5774f0ea5d89587d73021a2e03c3c44777d903840c608754a1be519f51e37bb6"
+            }
+        }
+    }
