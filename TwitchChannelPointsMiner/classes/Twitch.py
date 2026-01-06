@@ -392,30 +392,20 @@ class Twitch(object):
                         # Please perform a manually update and check if the user it's online
                         self.check_streamer_online(streamers[index])
 
-                """
-                Twitch has a limit - you can't watch more than 2 channels at one time.
-                We'll take the first two streamers from the final list as they have the highest priority.
-                """
-                max_watch_amount = 2
-                streamers_watching = set()
-
-                def remaining_watch_amount():
-                    return max_watch_amount - len(streamers_watching)
-                    
+                streamers_watching = []
                 for prior in priority:
-                    if remaining_watch_amount() <= 0:
-                        break
-
-                    if prior == Priority.ORDER:
+                    if prior == Priority.ORDER and len(streamers_watching) < 2:
                         # Get the first 2 items, they are already in order
-                        streamers_watching.update(streamers_index[:remaining_watch_amount()])
+                        streamers_watching += streamers_index[:2]
 
-                    elif prior in [Priority.POINTS_ASCENDING, Priority.POINTS_DESCENDING]:
+                    elif (
+                        prior in [Priority.POINTS_ASCENDING,
+                                  Priority.POINTS_DESCENDING]
+                        and len(streamers_watching) < 2
+                    ):
                         items = [
-                            {
-                                "points": streamers[index].channel_points,
-                                "index": index
-                            }
+                            {"points": streamers[index].channel_points,
+                                "index": index}
                             for index in streamers_index
                         ]
                         items = sorted(
@@ -425,9 +415,10 @@ class Twitch(object):
                                 True if prior == Priority.POINTS_DESCENDING else False
                             ),
                         )
-                        streamers_watching.update([item["index"] for item in items][:remaining_watch_amount()])
+                        streamers_watching += [item["index"]
+                                               for item in items][:2]
 
-                    elif prior == Priority.STREAK:
+                    elif prior == Priority.STREAK and len(streamers_watching) < 2:
                         """
                         Check if we need need to change priority based on watch streak
                         Viewers receive points for returning for x consecutive streams.
@@ -457,11 +448,11 @@ class Twitch(object):
                     elif prior == Priority.DROPS and len(streamers_watching) < 2:
                         for index in streamers_index:
                             if streamers[index].drops_condition() is True:
-                                streamers_watching.add(index)
-                                if remaining_watch_amount() <= 0:
+                                streamers_watching.append(index)
+                                if len(streamers_watching) == 2:
                                     break
 
-                    elif prior == Priority.SUBSCRIBED:
+                    elif prior == Priority.SUBSCRIBED and len(streamers_watching) < 2:
                         streamers_with_multiplier = [
                             index
                             for index in streamers_index
@@ -473,9 +464,13 @@ class Twitch(object):
                             ),
                             reverse=True,
                         )
-                        streamers_watching.update(streamers_with_multiplier[:remaining_watch_amount()])
+                        streamers_watching += streamers_with_multiplier[:2]
 
-                streamers_watching = list(streamers_watching)[:max_watch_amount]
+                """
+                Twitch has a limit - you can't watch more than 2 channels at one time.
+                We take the first two streamers from the list as they have the highest priority (based on order or WatchStreak).
+                """
+                streamers_watching = streamers_watching[:2]
 
                 for index in streamers_watching:
                     # next_iteration = time.time() + 60 / len(streamers_watching)
