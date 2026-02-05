@@ -98,8 +98,8 @@ twitch_miner.mine(
       Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("arguz11", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("trixnado", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("Emptaro", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 #      Streamer("ruletarbx3", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-#      Streamer("hamingxd", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 #      Streamer("sirdandeman", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 
