@@ -168,15 +168,15 @@ class Twitch(object):
                 raise StreamerIsOfflineException
 
 # --- ASÍ DEBERÍA QUEDAR ---
-def get_stream_info(self, streamer):
-    response = self._gql_request(query_get_stream_info, {"channelLogin": streamer})
-    if response is None or "data" not in response:
-        self.logger.error(f"Error al obtener info de {streamer}. ¿Token expirado o IP bloqueada?")
-        return None
-    user_data = response.get("data", {}).get("user")
-    if user_data is None:
-        return None
-    return user_data.get("stream")
+    def get_stream_info(self, streamer):
+        response = self._gql_request(query_get_stream_info, {"channelLogin": streamer})
+        if response is None or "data" not in response:
+            self.logger.error(f"Error al obtener info de {streamer}. ¿Token expirado o IP bloqueada?")
+            return None
+        user_data = response.get("data", {}).get("user")
+        if user_data is None:
+            return None
+        return user_data.get("stream")
 
     def check_streamer_online(self, streamer):
         if time.time() < streamer.offline_at + 60:
