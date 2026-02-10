@@ -168,17 +168,15 @@ class Twitch(object):
                 raise StreamerIsOfflineException
 
     def get_stream_info(self, streamer):
-        response = self.post_gql_request(query_get_stream_info, {"channelLogin": streamer}) 
-        
-        if response is None or "data" not in response:
-            self.logger.error(f"Error: No se recibió 'data' de Twitch para {streamer}.")
-            return None
-            
-        user = response.get("data", {}).get("user")
-        if user is None:
-            return None
-            
-        return user.get("stream")
+        json_data = copy.deepcopy(
+            GQLOperations.VideoPlayerStreamInfoOverlayChannel)
+        json_data["variables"] = {"channel": streamer.username}
+        response = self.post_gql_request(json_data)
+        if response != {}:
+            if response["data"]["user"]["stream"] is None:
+                raise StreamerIsOfflineException
+            else:
+                return response["data"]["user"]
 
     def check_streamer_online(self, streamer):
         if time.time() < streamer.offline_at + 60:
