@@ -91,6 +91,7 @@ twitch_miner = TwitchChannelPointsMiner(
 twitch_miner.mine(
     [
       Streamer("cwinship_", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("jiiewser", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("LilaFrost21", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
