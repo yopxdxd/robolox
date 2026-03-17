@@ -91,15 +91,15 @@ twitch_miner = TwitchChannelPointsMiner(
 twitch_miner.mine(
     [
       Streamer("SirDapper", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("leszozofficiels", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("leszozofficiels", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
       Streamer("skuliabii", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
+      Streamer("delicioustf2", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("reckmaz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
       Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("trixnado", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-#      Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("Emptaro", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 #      Streamer("sirdandeman", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
