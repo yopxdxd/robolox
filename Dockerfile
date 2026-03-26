@@ -28,7 +28,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -qq -y --fix-missing --no-ins
     g++ \
     subversion \
     python3-dev \
-    ninja \
     python3.9 \
     python3.9-dev \
     python3.9-minimal \
