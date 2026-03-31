@@ -1,16 +1,4 @@
-import time
-import requests
-from textwrap import dedent
-from TwitchChannelPointsMiner.classes.Settings import Events
-
-class Discord(object):
-    __slots__ = ["webhook_api", "events"]
-
-    def __init__(self, webhook_api: str, events: list):
-        self.webhook_api = webhook_api
-        self.events = [str(e) for e in events]
-
-    def send(self, message: str, event: Events) -> None:
+def send(self, message: str, event: Events) -> None:
         if str(event) not in self.events:
             return
 
@@ -24,17 +12,36 @@ class Discord(object):
             try:
                 response = requests.post(url=self.webhook_api, json=payload, timeout=10)
                 
+                # 1. Éxito
                 if response.status_code == 204:
+                    # Opcional: Ver cuántas peticiones te quedan
+                    # print(f"Peticiones restantes: {response.headers.get('x-ratelimit-remaining')}")
                     break 
 
+                # 2. Rate Limit (Error 429)
                 if response.status_code == 429:
-                    data = response.json()
-                    espera = data.get("retry_after", 5)
-                    print(f"[Discord] Rate Limit: Esperando {espera} segundos...")
+                    # LEER DIRECTO DE LAS CABECERAS (Más seguro que el JSON)
+                    espera_header = response.headers.get("Retry-After")
+                    
+                    if espera_header:
+                        espera = float(espera_header)
+                    else:
+                        # Si no está en el header, intentamos el JSON como última opción
+                        try:
+                            espera = response.json().get("retry_after", 5000) / 1000
+                        except:
+                            espera = 5
+                    
+                    print(f"--- BLOQUEO DE DISCORD ---")
+                    print(f"Tiempo de espera restante: {espera} segundos")
+                    print(f"ID del Webhook: {response.headers.get('x-ratelimit-bucket')}")
+                    print(f"--------------------------")
+                    
                     time.sleep(espera)
                     continue
 
                 response.raise_for_status()
+                
             except Exception as e:
                 print(f"[Discord Error] {e}")
                 break
