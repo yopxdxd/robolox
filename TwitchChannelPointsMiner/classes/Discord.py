@@ -9,6 +9,19 @@ class Discord(object):
         self.webhook_api = webhook_api
         self.events = [str(e) for e in events]
         self.bloqueo = 0
+        # Hilo que revisa el estado del bloqueo cada 60 minutos
+        threading.Thread(target=self._monitor_log, daemon=True).start()
+
+    def _monitor_log(self):
+        """Informa en el log de Render cada 60 minutos sobre el estado del Rate Limit"""
+        while True:
+            time.sleep(3600) # Espera 60 minutos
+            ahora = time.time()
+            if ahora < self.bloqueo:
+                restante = int(self.bloqueo - ahora)
+                print(f"[Render Log] Status: Rate Limit ACTIVO. Faltan {restante}s para desbloquear.")
+            else:
+                print("[Render Log] Status: Sistema de notificaciones OK (Sin bloqueos).")
 
     def _enviar(self, payload):
         try:
@@ -16,12 +29,12 @@ class Discord(object):
             if resp.status_code == 429:
                 espera = float(resp.headers.get("Retry-After", 10))
                 self.bloqueo = time.time() + espera
-                print(f"[Discord] Bloqueo de {espera}s. Ignorando mensajes...")
+                print(f"[Discord] ¡Rate Limit! Descartando mensajes por {espera}s.")
         except:
-            pass # Evita que el script se cierre si falla el internet
+            pass
 
     def send(self, message: str, event: Events) -> None:
-        # Si el evento no está en la lista o estamos en tiempo de bloqueo, no hacemos NADA
+        # Descarte total de eventos no deseados o si estamos bloqueados
         if str(event) not in self.events or time.time() < self.bloqueo:
             return
 
@@ -31,5 +44,4 @@ class Discord(object):
             "avatar_url": "https://cdn.discordapp.com/attachments/1011810855895179354/1317598510534754465/IMG_3753.jpg"
         }
 
-        # Enviamos en un hilo separado para que el minero siga sumando puntos
         threading.Thread(target=self._enviar, args=(payload,), daemon=True).start()
