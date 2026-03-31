@@ -1,4 +1,16 @@
-def send(self, message: str, event: Events) -> None:
+import time
+import requests
+from textwrap import dedent
+from TwitchChannelPointsMiner.classes.Settings import Events  # ESTA LÍNEA ES VITAL
+
+class Discord(object):
+    __slots__ = ["webhook_api", "events"]
+
+    def __init__(self, webhook_api: str, events: list):
+        self.webhook_api = webhook_api
+        self.events = [str(e) for e in events]
+
+    def send(self, message: str, event: Events) -> None:
         if str(event) not in self.events:
             return
 
@@ -12,30 +24,17 @@ def send(self, message: str, event: Events) -> None:
             try:
                 response = requests.post(url=self.webhook_api, json=payload, timeout=10)
                 
-                # 1. Éxito
                 if response.status_code == 204:
-                    # Opcional: Ver cuántas peticiones te quedan
-                    # print(f"Peticiones restantes: {response.headers.get('x-ratelimit-remaining')}")
                     break 
 
-                # 2. Rate Limit (Error 429)
                 if response.status_code == 429:
-                    # LEER DIRECTO DE LAS CABECERAS (Más seguro que el JSON)
+                    # Leemos el tiempo de espera directamente de las cabeceras de Discord
                     espera_header = response.headers.get("Retry-After")
+                    espera = float(espera_header) if espera_header else 5
                     
-                    if espera_header:
-                        espera = float(espera_header)
-                    else:
-                        # Si no está en el header, intentamos el JSON como última opción
-                        try:
-                            espera = response.json().get("retry_after", 5000) / 1000
-                        except:
-                            espera = 5
-                    
-                    print(f"--- BLOQUEO DE DISCORD ---")
-                    print(f"Tiempo de espera restante: {espera} segundos")
-                    print(f"ID del Webhook: {response.headers.get('x-ratelimit-bucket')}")
-                    print(f"--------------------------")
+                    print(f"--- RATE LIMIT DE DISCORD ---")
+                    print(f"Esperando {espera} segundos para reintentar...")
+                    print(f"------------------------------")
                     
                     time.sleep(espera)
                     continue
