@@ -1,30 +1,40 @@
-import time # Importante añadir esto arriba del archivo
+import time
+import requests
+from textwrap import dedent
+from TwitchChannelPointsMiner.classes.Settings import Events
 
-def send(self, message: str, event: Events) -> None:
-    if str(event) not in self.events:
-        return
+class Discord(object):
+    __slots__ = ["webhook_api", "events"]
 
-    payload = {
-        "content": dedent(message),
-        "username": "miau",
-        "avatar_url": "https://cdn.discordapp.com/attachments/1011810855895179354/1317598510534754465/IMG_3753.jpg",
-    }
+    def __init__(self, webhook_api: str, events: list):
+        self.webhook_api = webhook_api
+        self.events = [str(e) for e in events]
 
-    # Intentamos enviar hasta 3 veces si hay bloqueo por velocidad
-    for intento in range(3):
-        try:
-            response = requests.post(url=self.webhook_api, json=payload, timeout=10)
-            
-            if response.status_code == 429:
-                # Discord nos dice cuántos milisegundos esperar en el encabezado 'retry_after'
-                espera = response.json().get("retry_after", 5000) / 1000
-                print(f"[!] Rate Limit: Esperando {espera} segundos...")
-                time.sleep(espera)
-                continue # Reintenta el envío
+    def send(self, message: str, event: Events) -> None:
+        if str(event) not in self.events:
+            return
+
+        payload = {
+            "content": dedent(message),
+            "username": "miau",
+            "avatar_url": "https://cdn.discordapp.com/attachments/1011810855895179354/1317598510534754465/IMG_3753.jpg",
+        }
+
+        for intento in range(3):
+            try:
+                response = requests.post(url=self.webhook_api, json=payload, timeout=10)
                 
-            response.raise_for_status()
-            break # Si salió bien (204), salimos del bucle
-            
-        except requests.exceptions.RequestException as e:
-            print(f"[Discord Error] {e}")
-            break
+                if response.status_code == 204:
+                    break 
+
+                if response.status_code == 429:
+                    data = response.json()
+                    espera = data.get("retry_after", 5)
+                    print(f"[Discord] Rate Limit: Esperando {espera} segundos...")
+                    time.sleep(espera)
+                    continue
+
+                response.raise_for_status()
+            except Exception as e:
+                print(f"[Discord Error] {e}")
+                break
