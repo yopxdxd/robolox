@@ -101,7 +101,7 @@ twitch_miner.mine(
       Streamer("crxdaniiel", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 #      Streamer("flxvrrs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("ewwsumit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-#      Streamer("delicioustf2", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("delicioustf2", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("x_v0l", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("skuliabii", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
 #      Streamer("reckmaz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
