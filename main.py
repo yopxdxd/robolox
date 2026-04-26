@@ -96,7 +96,8 @@ twitch_miner.mine(
       Streamer("NovariiTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("SpeedyShark_YT", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("actually_katana", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("notkneeyuh", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("GamongDareal", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("notkneeyuh", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 15 de mayo
       Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), 
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
@@ -109,7 +110,7 @@ twitch_miner.mine(
       Streamer("flxvrrs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("x_v0l", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("skuliabii", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
-#      Streamer("crxdaniiel", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+#      Streamer("crxdaniiel", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), 5 de mayo
       Streamer("trixnado", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("robuxvibes", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
