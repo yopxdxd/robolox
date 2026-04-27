@@ -98,12 +98,12 @@ twitch_miner.mine(
       Streamer("actually_katana", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("GamongDareal", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("notkneeyuh", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 15 de mayo
-      Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), 
+      Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 7 de mayo
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("ewwsumit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("ewwsumit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 27 de mayo
       Streamer("delicious_frogz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
  #     Streamer("frunza066", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("sylnaseril", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
@@ -118,6 +118,7 @@ twitch_miner.mine(
       Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("yoshihasmytimbs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("lootbrawlhalla", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("BrawlhallaTournaments365", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 
         
     ],                                  # Array of streamers (order = priority)
