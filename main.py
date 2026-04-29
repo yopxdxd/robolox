@@ -98,7 +98,7 @@ twitch_miner.mine(
       Streamer("actually_katana", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("GamongDareal", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("notkneeyuh", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 15 de mayo
-      Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 7 de mayo
+      Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
@@ -114,7 +114,6 @@ twitch_miner.mine(
       Streamer("trixnado", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("robuxvibes", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("Emptaro", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("yoshihasmytimbs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("lootbrawlhalla", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
