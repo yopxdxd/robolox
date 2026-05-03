@@ -99,13 +99,13 @@ twitch_miner.mine(
       Streamer("firedv_rbx", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("NovariiTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("SpeedyShark_YT", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("GamongDareal", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+#      Streamer("GamongDareal", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), 5 de mayo
       Streamer("notkneeyuh", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 5 de mayo
       Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("ewwsumit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 9 de mayo
       Streamer("delicious_frogz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
  #     Streamer("frunza066", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), 10 de mayo
