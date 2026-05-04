@@ -95,11 +95,10 @@ twitch_miner.mine(
       Streamer("kozywater", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("firedv_rbx", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("NovariiTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("SpeedyShark_YT", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("notkneeyuh", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 8 de mayo
+      Streamer("SpeedyShark_YT", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 4 de junio
       Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 4 de junio
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("ewwsumit", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 9 de mayo
@@ -110,7 +109,6 @@ twitch_miner.mine(
       Streamer("x_v0l", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("actually_katana", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("skuliabii", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
-      Streamer("trixnado", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("robuxvibes", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
