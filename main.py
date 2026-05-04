@@ -117,6 +117,7 @@ twitch_miner.mine(
       Streamer("yoshihasmytimbs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("lootbrawlhalla", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("BrawlhallaTournaments365", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("Raulstg7", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
 
         
     ],                                  # Array of streamers (order = priority)
