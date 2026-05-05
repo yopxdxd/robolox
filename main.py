@@ -106,7 +106,6 @@ twitch_miner.mine(
  #     Streamer("frunza066", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), 10 de mayo
       Streamer("sylnaseril", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("flxvrrs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("x_v0l", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("actually_katana", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("skuliabii", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
       Streamer("robuxvibes", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
