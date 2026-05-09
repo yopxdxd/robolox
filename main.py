@@ -90,14 +90,15 @@ twitch_miner = TwitchChannelPointsMiner(
 
 twitch_miner.mine(
     [
-      Streamer("KadenT17", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 8 de junio
+      Streamer("ssssmoaked", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("KadenT17", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 25 de mayo
       Streamer("kozywater", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("firedv_rbx", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("NovariiTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("SpeedyShark_YT", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 4 de junio
+      Streamer("SpeedyShark_YT", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 24 de mayo
       Streamer("BaljackTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 4 de junio
+      Streamer("squkiy", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 24 de mayo
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("delicious_frogz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
