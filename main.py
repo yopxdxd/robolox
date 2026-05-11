@@ -90,7 +90,6 @@ twitch_miner = TwitchChannelPointsMiner(
 
 twitch_miner.mine(
     [
-      Streamer("ssssmoaked", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("KadenT17", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 25 de mayo
       Streamer("kozywater", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("firedv_rbx", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
