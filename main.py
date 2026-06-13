@@ -95,14 +95,13 @@ twitch_miner.mine(
       Streamer("NovariiTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("mafxkey", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("LesZozoTV", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
+      Streamer("imshayph", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("hammafv", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("bacon_gaming15", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("eplefort", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("hubert4346_pl", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 1 de Julio
       Streamer("flxvrrs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("skuliabii", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),  
       Streamer("actually_katana", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("mikusz_play", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 1 de Julio
       Streamer("maniacmurky", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("sylnaseril", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)), # 1 de Julio
       Streamer("delicious_frogz", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
@@ -111,7 +110,6 @@ twitch_miner.mine(
       Streamer("robuxvibes", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("lootbrawlhalla", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("zintid", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
-      Streamer("daitoistaken", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("yoshihasmytimbs", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("BrawlhallaTournaments365", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
       Streamer("Raulstg7", settings=StreamerSettings(follow_raid=True , claim_drops=True  , watch_streak=True)),
